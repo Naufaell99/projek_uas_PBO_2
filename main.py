@@ -1,4 +1,5 @@
 from services.marketplace import Marketplace
+from utils.data_manager import simpan_semua, muat_semua
 from services.auth_service import AuthService
 from services.order_service import OrderService
 from models.admin import Admin
@@ -9,7 +10,9 @@ from utils.helpers import cetak_header, cetak_garis, generate_id
 
 # ── Inisialisasi ─────────────────────────────────────────────────────────────
 
-marketplace = Marketplace("Marketplace PBO - BelanjaCuy ")
+marketplace = Marketplace("Marketplace PBO - Hendra")
+muat_semua(marketplace)          
+marketplace.seed_jika_kosong()   
 auth        = AuthService(marketplace)
 order_svc   = OrderService(marketplace)
 
@@ -37,7 +40,7 @@ def menu_admin(admin):
         elif pilihan == "2":
             cetak_header("TAMBAH PRODUK")
             nama = input("  Nama Produk  : ").strip()
-            
+            # FIX BUG 3: validasi nama dulu sebelum lanjut input lainnya
             if not nama:
                 print("[Input] Nama produk tidak boleh kosong.\n")
                 continue
@@ -55,17 +58,20 @@ def menu_admin(admin):
                 continue
             deskripsi = input("  Deskripsi    : ").strip()
             admin.tambah_produk(marketplace, nama, harga, stok, deskripsi)
+            simpan_semua(marketplace)
 
         elif pilihan == "3":
             admin.lihat_semua_produk(marketplace)
             product_id = input("\n  Masukkan ID produk yang dihapus : ").strip()
             admin.hapus_produk(marketplace, product_id)
+            simpan_semua(marketplace)
 
         elif pilihan == "4":
             order_svc.tampilkan_semua_order()
 
         elif pilihan == "5":
             order_svc.update_status_order()
+            simpan_semua(marketplace)
 
         elif pilihan == "6":
             order_svc.tampilkan_detail_order()
@@ -153,7 +159,9 @@ def menu_customer(customer):
             customer.lihat_cart()
             konfirmasi = input("  Yakin ingin checkout? (y/n) : ").strip().lower()
             if konfirmasi == "y":
-                customer.checkout(marketplace)
+                hasil = customer.checkout(marketplace)
+                if hasil:
+                    simpan_semua(marketplace)
             else:
                 print("[Checkout] Dibatalkan.\n")
 
@@ -217,7 +225,9 @@ def menu_beri_ulasan(customer):
     if not komentar:
         print("[Ulasan] Komentar tidak boleh kosong.\n")
         return
-    customer.beri_ulasan(produk, rating, komentar)
+    hasil_ulasan = customer.beri_ulasan(produk, rating, komentar)
+    if hasil_ulasan:
+        simpan_semua(marketplace)
 
 
 def menu_lihat_ulasan_produk():
@@ -232,7 +242,7 @@ def menu_lihat_ulasan_produk():
         print("[Ulasan] Produk tidak ditemukan.\n")
         return
 
-    reviews = produk.reviews  
+    reviews = produk.reviews  # property, return copy list
     print(f"\n  Produk  : {produk.nama}")
     print(f"  Rating  : {produk.get_avg_rating()}/5.0  "
           f"({len(reviews)} ulasan)")
@@ -285,7 +295,9 @@ def menu_utama():
                     menu_customer(user)
 
         elif pilihan == "2":
-            auth.register_customer()
+            berhasil_daftar = auth.register_customer()
+            if berhasil_daftar:
+                simpan_semua(marketplace)
 
         elif pilihan == "3":
             tampilkan_produk_list()
@@ -304,7 +316,7 @@ def menu_utama():
 if __name__ == "__main__":
     print()
     print("  ╔══════════════════════════════════╗")
-    print("  ║    MARKETPLACE APP — PBO 2026    ║")
+    print("  ║    MARKETPLACE APP — PBO 2025    ║")
     print("  ╚══════════════════════════════════╝")
     print()
     menu_utama()
