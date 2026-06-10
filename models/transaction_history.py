@@ -15,7 +15,6 @@ class TransactionHistory:
         return [o for o in self.__orders if o.status == status]
 
     def sudah_beli(self, produk):
-        # cek apakah produk pernah ada di order yang sudah selesai
         for order in self.__orders:
             if order.status == OrderStatus.COMPLETED and order.berisi_produk(produk):
                 return True

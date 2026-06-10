@@ -30,7 +30,7 @@ class Product:
 
     @property
     def reviews(self):
-        return list(self.__reviews)  # return copy, biar list asli gak bisa diutak-atik
+        return list(self.__reviews)
 
     def kurangi_stok(self, qty):
         if qty > self.__stok:

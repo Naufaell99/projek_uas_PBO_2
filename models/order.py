@@ -12,7 +12,7 @@ class Order:
     def __init__(self, order_id, customer, items, total):
         self.__order_id = order_id
         self.__customer = customer
-        self.__items = items        # dict {Product: qty}, snapshot dari cart
+        self.__items = items       
         self.__total = total
         self.__status = OrderStatus.PENDING
         self.__tanggal = datetime.datetime.now()
@@ -47,7 +47,6 @@ class Order:
             print("[Order] Status tidak valid.")
             return False
 
-        # urutan status harus logis, gak boleh mundur
         urutan = [OrderStatus.PENDING, OrderStatus.PROCESSING, OrderStatus.COMPLETED]
         idx_sekarang = urutan.index(self.__status)
         idx_baru = urutan.index(status_baru)

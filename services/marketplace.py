@@ -15,7 +15,6 @@ class Marketplace:
         self.__order_list = []
         self.__user_list = []
 
-        # Buat akun admin default otomatis
         self._seed_admin()
         self._seed_produk_contoh()
 
@@ -31,10 +30,10 @@ class Marketplace:
     def _seed_produk_contoh(self):
         """Isi beberapa produk contoh biar tampilan awal tidak kosong."""
         contoh = [
-            Product(generate_id("PRD"), "Laptop Asus VivoBook", 7_500_000, 10, "Intel i5, RAM 8GB, SSD 512GB"),
-            Product(generate_id("PRD"), "Mouse Wireless Logitech", 150_000, 50, "DPI 1600, baterai tahan lama"),
-            Product(generate_id("PRD"), "Keyboard Mechanical", 350_000, 25, "Switch Blue, RGB backlight"),
-            Product(generate_id("PRD"), "Headset Gaming Rexus", 200_000, 30, "Surround 7.1, mic noise cancel"),
+            Product(generate_id("PRD"), "Laptop Asus VivoBook",   7_500_000, 10, "Intel i5, RAM 8GB, SSD 512GB"),
+            Product(generate_id("PRD"), "Mouse Wireless Logitech",  150_000, 50, "DPI 1600, baterai tahan lama"),
+            Product(generate_id("PRD"), "Keyboard Mechanical",      350_000, 25, "Switch Blue, RGB backlight"),
+            Product(generate_id("PRD"), "Headset Gaming Rexus",     200_000, 30, "Surround 7.1, mic noise cancel"),
         ]
         self.__produk_list.extend(contoh)
 
@@ -46,8 +45,22 @@ class Marketplace:
     def hapus_produk(self, product_id):
         for p in self.__produk_list:
             if p.product_id == product_id:
+                
+                if self._produk_ada_di_cart(p):
+                    print(f"[Marketplace] Produk '{p.nama}' tidak bisa dihapus "
+                          f"karena masih ada di cart customer.")
+                    return False
                 self.__produk_list.remove(p)
                 return True
+        return False
+
+    def _produk_ada_di_cart(self, produk):
+        """Cek apakah produk masih ada di cart salah satu customer."""
+        from models.customer import Customer
+        for user in self.__user_list:
+            if isinstance(user, Customer):
+                if produk in user.cart.get_items():
+                    return True
         return False
 
     def cari_produk(self, product_id):
@@ -57,7 +70,6 @@ class Marketplace:
         return None
 
     def cari_produk_by_nama(self, keyword):
-        """Cari produk berdasarkan kata kunci (case-insensitive)."""
         keyword = keyword.lower()
         return [p for p in self.__produk_list if keyword in p.nama.lower()]
 
@@ -78,6 +90,7 @@ class Marketplace:
     def get_semua_order(self):
         return list(self.__order_list)
 
+
     # ── Manajemen User ───────────────────────────────────────────
 
     def daftarkan_user(self, user):
@@ -85,12 +98,12 @@ class Marketplace:
 
     def cari_user(self, username):
         for u in self.__user_list:
-            if u.username == username:
+            if u.username.lower() == username.lower():
                 return u
         return None
 
     def username_tersedia(self, username):
-        return self.cari_user(username) is None
+        return self.cari_user(username.lower()) is None
 
     def get_semua_user(self):
         return list(self.__user_list)

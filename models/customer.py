@@ -10,7 +10,6 @@ class Customer(User):
         self.__alamat = alamat
         self.__no_telepon = no_telepon
 
-        # composition — cart dan history hidup/mati bareng customer
         self.__cart = Cart()
         self.__history = TransactionHistory()
 

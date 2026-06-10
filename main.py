@@ -9,7 +9,7 @@ from utils.helpers import cetak_header, cetak_garis, generate_id
 
 # ── Inisialisasi ─────────────────────────────────────────────────────────────
 
-marketplace = Marketplace("Marketplace PBO - Hendra")
+marketplace = Marketplace("Marketplace PBO - BelanjaCuy ")
 auth        = AuthService(marketplace)
 order_svc   = OrderService(marketplace)
 
@@ -25,7 +25,8 @@ def menu_admin(admin):
         print("  4. Lihat Semua Order")
         print("  5. Update Status Order")
         print("  6. Detail Order")
-        print("  7. Info Akun")
+        print("  7. Lihat Ulasan Produk")
+        print("  8. Info Akun")
         print("  0. Logout")
         cetak_garis()
         pilihan = input("  Pilih menu : ").strip()
@@ -35,12 +36,22 @@ def menu_admin(admin):
 
         elif pilihan == "2":
             cetak_header("TAMBAH PRODUK")
-            nama      = input("  Nama Produk  : ").strip()
+            nama = input("  Nama Produk  : ").strip()
+            
+            if not nama:
+                print("[Input] Nama produk tidak boleh kosong.\n")
+                continue
             try:
                 harga = float(input("  Harga (Rp)   : ").strip())
                 stok  = int(input("  Stok         : ").strip())
             except ValueError:
                 print("[Input] Harga dan stok harus angka.\n")
+                continue
+            if harga <= 0:
+                print("[Input] Harga harus lebih dari 0.\n")
+                continue
+            if stok < 0:
+                print("[Input] Stok tidak boleh minus.\n")
                 continue
             deskripsi = input("  Deskripsi    : ").strip()
             admin.tambah_produk(marketplace, nama, harga, stok, deskripsi)
@@ -60,6 +71,9 @@ def menu_admin(admin):
             order_svc.tampilkan_detail_order()
 
         elif pilihan == "7":
+            menu_lihat_ulasan_produk()
+
+        elif pilihan == "8":
             print("\n" + admin.get_info() + "\n")
 
         elif pilihan == "0":
@@ -84,7 +98,8 @@ def menu_customer(customer):
         print("  6. Checkout")
         print("  7. Riwayat Transaksi")
         print("  8. Beri Ulasan Produk")
-        print("  9. Info Akun")
+        print("  9. Lihat Ulasan Produk")
+        print("  10. Info Akun")
         print("  0. Logout")
         cetak_garis()
         pilihan = input("  Pilih menu : ").strip()
@@ -116,6 +131,10 @@ def menu_customer(customer):
             except ValueError:
                 print("[Input] Jumlah harus angka.\n")
                 continue
+            # FIX: qty tidak boleh minus atau nol
+            if qty <= 0:
+                print("[Input] Jumlah harus lebih dari 0.\n")
+                continue
             customer.tambah_ke_cart(produk, qty)
 
         elif pilihan == "4":
@@ -145,6 +164,9 @@ def menu_customer(customer):
             menu_beri_ulasan(customer)
 
         elif pilihan == "9":
+            menu_lihat_ulasan_produk()
+
+        elif pilihan == "10":
             print("\n" + customer.get_info() + "\n")
 
         elif pilihan == "0":
@@ -191,7 +213,40 @@ def menu_beri_ulasan(customer):
         return
 
     komentar = input("  Komentar        : ").strip()
+    # FIX BUG 5: komentar tidak boleh kosong
+    if not komentar:
+        print("[Ulasan] Komentar tidak boleh kosong.\n")
+        return
     customer.beri_ulasan(produk, rating, komentar)
+
+
+def menu_lihat_ulasan_produk():
+    """Lihat semua ulasan dari suatu produk — bisa diakses admin maupun customer."""
+    cetak_header("LIHAT ULASAN PRODUK")
+    tampilkan_produk_list()
+
+    product_id = input("  Masukkan ID produk : ").strip()
+    produk     = marketplace.cari_produk(product_id)
+
+    if produk is None:
+        print("[Ulasan] Produk tidak ditemukan.\n")
+        return
+
+    reviews = produk.reviews  
+    print(f"\n  Produk  : {produk.nama}")
+    print(f"  Rating  : {produk.get_avg_rating()}/5.0  "
+          f"({len(reviews)} ulasan)")
+    cetak_garis()
+
+    if not reviews:
+        print("  Belum ada ulasan untuk produk ini.\n")
+        return
+
+    for i, r in enumerate(reviews, start=1):
+        print(f"\n  Ulasan #{i}")
+        print(r)
+
+    print()
 
 
 # ── Helper tampilkan produk ───────────────────────────────────────────────────

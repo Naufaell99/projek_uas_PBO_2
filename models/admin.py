@@ -4,12 +4,10 @@ from models.user import User
 class Admin(User):
     def __init__(self, username, password):
         super().__init__(username, password)
-        # admin nyimpen referensi ke products & orders lewat marketplace,
-        # tapi kita kasih list lokal buat akses cepat
+    
         self.__managed_products = []
         self.__managed_orders = []
 
-    # override login — admin punya pesan berbeda
     def login(self, password):
         if self.check_password(password):
             self._is_logged_in = True
@@ -22,7 +20,6 @@ class Admin(User):
         self._is_logged_in = False
         print(f"[Admin] {self._username} telah logout.")
 
-    # override get_info — info yang ditampilkan beda dengan customer
     def get_info(self):
         status = "Login" if self._is_logged_in else "Logout"
         return (

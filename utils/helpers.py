@@ -1,13 +1,14 @@
-import uuid
+
+_id_counter = {}
 
 
 def generate_id(prefix="ID"):
-    """
-    Buat ID unik dengan format PREFIX-XXXXXXXX
-    Contoh: PRD-A1B2C3D4, ORD-9F3E1A2B
-    """
-    kode_unik = uuid.uuid4().hex[:8].upper()
-    return f"{prefix}-{kode_unik}"
+  
+    if prefix not in _id_counter:
+        _id_counter[prefix] = 1
+    nomor = str(_id_counter[prefix]).zfill(3)
+    _id_counter[prefix] += 1
+    return f"{prefix}-{nomor}"
 
 
 def format_rupiah(angka):

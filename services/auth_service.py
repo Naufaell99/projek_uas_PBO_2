@@ -1,3 +1,4 @@
+import re
 from models.customer import Customer
 from utils.helpers import cetak_header
 
@@ -10,7 +11,7 @@ class AuthService:
 
     def __init__(self, marketplace):
         self.__marketplace = marketplace
-        self.__user_aktif = None  # user yang sedang login
+        self.__user_aktif = None
 
     @property
     def user_aktif(self):
@@ -20,10 +21,14 @@ class AuthService:
         return self.__user_aktif is not None and self.__user_aktif.is_logged_in
 
     def login(self):
-        """Proses login untuk admin maupun customer."""
         cetak_header("LOGIN")
         username = input("  Username : ").strip()
         password = input("  Password : ").strip()
+
+        # FIX BUG 4: password tidak boleh kosong
+        if not username or not password:
+            print("\n[Auth] Username dan password tidak boleh kosong.\n")
+            return False
 
         user = self.__marketplace.cari_user(username)
 
@@ -41,7 +46,6 @@ class AuthService:
             return False
 
     def logout(self):
-        """Logout user yang sedang aktif."""
         if self.__user_aktif:
             self.__user_aktif.logout()
             self.__user_aktif = None
@@ -70,11 +74,27 @@ class AuthService:
             return False
 
         nama_lengkap = input("  Nama Lengkap  : ").strip()
-        alamat       = input("  Alamat        : ").strip()
-        no_telepon   = input("  No. Telepon   : ").strip()
+        if not nama_lengkap:
+            print("[Register] Nama lengkap tidak boleh kosong.\n")
+            return False
 
-        if not nama_lengkap or not alamat or not no_telepon:
-            print("[Register] Semua field wajib diisi.\n")
+        alamat = input("  Alamat        : ").strip()
+        if not alamat:
+            print("[Register] Alamat tidak boleh kosong.\n")
+            return False
+
+        no_telepon = input("  No. Telepon   : ").strip()
+        if not no_telepon:
+            print("[Register] No. Telepon tidak boleh kosong.\n")
+            return False
+
+        no_bersih = re.sub(r"[\s\-]", "", no_telepon)
+        if not no_bersih.isdigit():
+            print("[Register] No. Telepon hanya boleh berisi angka.\n")
+            return False
+        if not (9 <= len(no_bersih) <= 13):
+            print("[Register] No. Telepon harus 9-13 digit "
+                  "(contoh: 081234567890).\n")
             return False
 
         customer_baru = Customer(username, password, nama_lengkap, alamat, no_telepon)

@@ -51,16 +51,25 @@ class OrderService:
             return
 
         print(f"\n  Status sekarang : {order.status.value}")
+
+        from models.order import OrderStatus as OS
+        urutan = [OS.PENDING, OS.PROCESSING, OS.COMPLETED]
+        idx_sekarang = urutan.index(order.status)
+        pilihan_tersedia = urutan[idx_sekarang + 1:]
+
+        if not pilihan_tersedia:
+            print("[Order] Order ini sudah berstatus Selesai, tidak bisa diubah.\n")
+            return
+
         print("  Pilih status baru:")
-        print("  1. Diproses")
-        print("  2. Selesai")
+        for i, s in enumerate(pilihan_tersedia, start=1):
+            print(f"  {i}. {s.value}")
         pilihan = input("  Pilihan : ").strip()
 
-        if pilihan == "1":
-            status_baru = OrderStatus.PROCESSING
-        elif pilihan == "2":
-            status_baru = OrderStatus.COMPLETED
-        else:
+        try:
+            idx_pilihan = int(pilihan) - 1
+            status_baru = pilihan_tersedia[idx_pilihan]
+        except (ValueError, IndexError):
             print("[Order] Pilihan tidak valid.\n")
             return
 
