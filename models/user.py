@@ -7,7 +7,6 @@ class User(ABC):
         self.__password = password
         self._is_logged_in = False
 
-    # getter buat username, password disimpan private jadi gak bisa diakses langsung
     @property
     def username(self):
         return self._username
@@ -19,7 +18,6 @@ class User(ABC):
     def check_password(self, password):
         return self.__password == password
 
-    # method abstrak — wajib di-override di subclass
     @abstractmethod
     def login(self, password):
         pass

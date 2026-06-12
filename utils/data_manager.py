@@ -2,7 +2,7 @@ import json
 import os
 import datetime
 
-# path folder data relatif dari root project
+
 DATA_DIR    = os.path.join(os.path.dirname(__file__), "..", "data")
 FILE_USERS    = os.path.join(DATA_DIR, "users.json")
 FILE_PRODUCTS = os.path.join(DATA_DIR, "products.json")

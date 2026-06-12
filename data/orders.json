@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "order_id": "ORD-001",
+    "customer_username": "naufal99",
+    "items": {
+      "PRD-004": 10
+    },
+    "total": 2000000,
+    "status": "Selesai",
+    "tanggal": "2026-06-12 19:41:55"
+  }
+]

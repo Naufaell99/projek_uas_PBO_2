@@ -11,7 +11,7 @@
     "product_id": "PRD-002",
     "nama": "Mouse Wireless Logitech",
     "harga": 150000,
-    "stok": 50,
+    "stok": 5,
     "deskripsi": "DPI 1600, baterai tahan lama",
     "reviews": []
   },
@@ -27,8 +27,23 @@
     "product_id": "PRD-004",
     "nama": "Headset Gaming Rexus",
     "harga": 200000,
-    "stok": 30,
+    "stok": 20,
     "deskripsi": "Surround 7.1, mic noise cancel",
+    "reviews": [
+      {
+        "customer_username": "naufal99",
+        "rating": 5,
+        "komentar": "HEADSEAT NYA MANTAP BASS",
+        "tanggal": "2026-06-12 19:46:19"
+      }
+    ]
+  },
+  {
+    "product_id": "PRD-001",
+    "nama": "kipas angin",
+    "harga": 150000.0,
+    "stok": 5,
+    "deskripsi": "kipas angin kencang dingin seperti ac",
     "reviews": []
   }
 ]
