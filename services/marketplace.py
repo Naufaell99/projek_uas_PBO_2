@@ -9,7 +9,7 @@ class Marketplace:
     Admin default dibuat otomatis hanya saat data kosong (file JSON belum ada).
     """
 
-    def __init__(self, nama_toko="Toko Online PBO"):
+    def __init__(self, nama_toko="Toko Online BELANJA CUY"):
         self.__nama_toko  = nama_toko
         self.__produk_list = []
         self.__order_list  = []

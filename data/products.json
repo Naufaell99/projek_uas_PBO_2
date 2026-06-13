@@ -1,13 +1,5 @@
 [
   {
-    "product_id": "PRD-001",
-    "nama": "Laptop Asus VivoBook",
-    "harga": 7500000,
-    "stok": 10,
-    "deskripsi": "Intel i5, RAM 8GB, SSD 512GB",
-    "reviews": []
-  },
-  {
     "product_id": "PRD-002",
     "nama": "Mouse Wireless Logitech",
     "harga": 150000,
@@ -42,8 +34,16 @@
     "product_id": "PRD-001",
     "nama": "kipas angin",
     "harga": 150000.0,
-    "stok": 5,
+    "stok": 3,
     "deskripsi": "kipas angin kencang dingin seperti ac",
+    "reviews": []
+  },
+  {
+    "product_id": "PRD-001",
+    "nama": "kipas angin",
+    "harga": 90.0,
+    "stok": 2,
+    "deskripsi": "kipas anging berasa ac",
     "reviews": []
   }
 ]

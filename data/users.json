@@ -11,5 +11,13 @@
     "nama_lengkap": "naufal kurnia",
     "alamat": "pekanbaru",
     "no_telepon": "085274591650"
+  },
+  {
+    "role": "customer",
+    "username": "naufalkurnia",
+    "password": "1234",
+    "nama_lengkap": "naufalkurnia",
+    "alamat": "pekanbaru",
+    "no_telepon": "085274591650"
   }
 ]

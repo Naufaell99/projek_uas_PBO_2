@@ -316,7 +316,7 @@ def menu_utama():
 if __name__ == "__main__":
     print()
     print("  ╔══════════════════════════════════╗")
-    print("  ║    MARKETPLACE APP — PBO 2025    ║")
+    print("  ║    MARKETPLACE APP — PBO 2026    ║")
     print("  ╚══════════════════════════════════╝")
     print()
     menu_utama()

@@ -8,5 +8,15 @@
     "total": 2000000,
     "status": "Selesai",
     "tanggal": "2026-06-12 19:41:55"
+  },
+  {
+    "order_id": "ORD-001",
+    "customer_username": "naufal99",
+    "items": {
+      "PRD-001": 2
+    },
+    "total": 300000.0,
+    "status": "Pending",
+    "tanggal": "2026-06-13 14:30:14"
   }
 ]
